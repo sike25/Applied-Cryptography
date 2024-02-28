@@ -1,0 +1,86 @@
+Applied Cryptography
+Homework-2 solutions
+
+Name: Osasikemwen (Sike) Ann Ogieva
+E-mail: oogieva25@amherst.edu
+
+==========================================
+Challenge-1: Simple XOR cipher (2 points)
+------------------------------------------
+The key: S3cr3t
+
+Beginning of the decrypted plaintext:
+The United States of America (USA), commonly known as the United States (U.S.) or America, 
+is a federal republic composed of 50 states, a federal district, five major self-governing territories, 
+and various possessions.[fn 6] 
+At 3.8 million square miles (9.8 million km2), the United States is the world's third- 
+or fourth-largest country by total area[fn 7] and just fractionally smaller 
+than the entire continent of Europe's 3.9 million square miles......
+
+------------------------------------------
+Steps of your solution (brief description that is just enough to reproduce your method):
+
+I found the key length to be 6 by comparing:
+B: 0x13 F = 0.063 W = 138, to
+B: 0x73 F = 0.150 W = 70
+
+Then I used sample.py to segment the ciphertext such that every one of five texts contained 
+every 6th byte starting from index 0, 1, 2, 3, 4 and 5 
+python3 sample.py -l 6 -f 0 -i ciphertext.txt -o zero.txt
+....
+python3 sample.py -l 6 -f 5 -i ciphertext.txt -o five.txt
+
+Then I used stat.py to find the byte statistics for each text
+Then collected the most frequent bytes into a list, iterated through
+and XOR'ed each with x20. This gave me the key.
+
+Lastly, I used xor.py with the obtained key to obtain the plain text
+
+See attached:
+find_key.py, for my implementation in Python
+plaintext.txt, for the full decrypted text
+segment/ for the segmented byte streams
+
+==========================================
+Challenge-2: Fake transactions (3 points)
+------------------------------------------
+Your fake transaction record:
+ec16d218ae73a7fdb464e052f548ad84641fea45adb43a7df7bc
+
+also:
+ec16d21cae71a1fbba62ec52f548ad84641fea45adb43b78f2bc
+ec16d11eae72a4f6b465ef52f548ad84641fea45adb43b79f4bc
+
+------------------------------------------
+Steps of preparing your fake transaction (brief description that is just enough to reproduce your solution):
+
+NOTE:
+See fake.py for full code and walk-through
+Run fake.py for partial walk-through
+
+ENCODING MY BANK ACCOUNT
+xor the five given accounts with each other, and the three destination accounts with each other
+Then manually match them as:
+ee48ac8f667e decodes to C12859
+e94aa9836572 decodes to D37465
+e848ac816673 decodes to E12654
+xor-ing the cipher and the plain accounts gives us the key for the destination account field
+We use it to encrypt our own account number.
+
+INCREMENT TRANSACTION NUMBER AND AMOUNT
+We xor the leading bytes of this values with zeroes, because we believe that to be their plaintext
+This gives us the leading bytes of the keys for those fields
+Which we xor to larger digits: 9, 5 and 3
+
+PUTTING IT ALL TOGETHER
+We pick a valid transaction record,
+1. replace the first few bytes of the transaction number to substantially increase it
+2. change the destination account to our own
+3. replace the first few bytes of the amount to substantially increase it
+4. leave the source account as it is, we already know they is valid
+
+
+
+
+
+
