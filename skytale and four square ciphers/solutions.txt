@@ -1,0 +1,79 @@
+Applied Cryptography
+Homework-1 solutions
+
+Name: Osasikemwen Ann Ogieva (Sike)
+E-mail: oogieva25@amherst.edu
+
+==============================================
+Challenge-1: Message from the Oracle (1 point)
+----------------------------------------------
+Decrypted message:
+
+PERIOD LENGTH:  7
+F o r   y o u   i n h a b i t a n t s   o f   w i d e
+w a y e d   S p a r t a   E i t h e r   y o u r   g r e
+a t   a n d   g l o r i o u s   c i t y   m u s t   b e
+  w a s t e d   b y   P e r s i a n   m e n   O r   i f
+  n o t   t h a t   t h e n   t h e   b o u n d   o f
+L a c e d a e m o n   m u s t   m o u r n   a   d e a d
+  k i n g   f r o m   H e r a c l e s   l i n e
+
+----------------------------------------------
+Steps of the solution (brief description that is just enough to reproduce your method):
+I ran a brute force solution, trying different period lengths, from 1 to half the cipherText string,
+to fill a 2D array. Then printed out the array accordingly.
+Scanning the print outs by eye, I found the decryption rather quicky at length 7.
+The code is attached (oracle_message.py)
+
+
+==============================================
+Challenge-2: Four-Square cipher (2 points)
+----------------------------------------------
+Decrypted message: (I added in the spaces by hand)
+normally files are opened in text mode that means you read and write strings
+from and to the file which are encoded in a specific encoding if encoding
+is not specified the default is platform dependent see open b appended
+to the mode opens the file in binary mode now the data is read and written
+in the form of bytes objects this mode should be used for all files that
+dont contain text
+
+The 4-square matrices recovered:
+<copy the matrices here>
+    a b c d e   P Y T H O
+    f g h i j   N A B C D
+    k l m n o   E F G I J
+    p r s t u   K L M R S    
+    v w x y z   U V W X Z
+
+    O P E N A   a b c d e
+    B C D F G   f g h i j
+    H I J K L   k l m n o
+    M R S T U   p r s t u
+    V W X Y Z   v w x y z
+
+
+----------------------------------------------
+Steps of the solution (brief description that is just enough to reproduce your method):
+The code is attached (four_sqaures.py)
+
+THE FOUR SQUARE MATRICES
+I solved the four square matrices by running a small brute force algorithm. 
+What letters were missing from the intervals? How did they fit in with the incomplete word on top?
+So I tried every combination, checking each resulting word against an English dictionary downloaded from nltk.
+Use: (pip install nltk)
+
+DECRYPTION
+I use the following data structues: 
+1. A 2D matrix (10*10) that holds the four square matrices
+2. Two maps for mapping the characters in the bottom left square and the upper right square to their indices
+  For example:
+  Upper Right Map = {P = 05, Y = 06...}
+  Bottom Left Map = {O = 50, P = 51...}
+
+Running through the input string two characters by two characters, I find their positions on the 2D matrix
+using the map then use that to find the plain text characters which land on the same rows and columns
+
+
+
+
+
