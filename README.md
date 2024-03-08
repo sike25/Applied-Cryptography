@@ -12,3 +12,7 @@ we forge a new valid transaction record to transfer a large sum is transferred t
 ### Task Three: Block Ciphers.
 Given some plain text and its corresponding cipher text encrypted with an MD5 
 three-round Feistel block cipher, figure out the key.
+
+### Task Four: More Block Cipher Attacks.
+Implement attacks on block ciphers in CBC and CTR mode using the content leak problem (from repeating cipher text blocks),
+the padding oracle attack and a repeated initialization counter.
