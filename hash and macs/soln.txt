@@ -1,0 +1,133 @@
+Applied Cryptography
+Homework-5 solutions
+
+Name: Osasikemwen Ogieva
+E-mail: oogieva25@amherst.edu
+
+Please, attach scripts and files requested below to this text file by putting all files in a single zip file! The zip file content should be the following:
+
+hw5-solutions-YourName.txt (this file)
+1_Happy_birthday/msg1.txt
+1_Happy_birthday/msg2.txt
+1_Happy_birthday/attack.py
+2_XOR-MAC/fake-t.txt
+2_XOR-MAC/t-mac.bin   
+
+
+=======================================
+Challenge-1: Happy Birthday! (2 points)
+---------------------------------------
+Attach in a zip file the following files:
+- your attack script (attack.py) that performs your attack and prints the two message variants and their trhash values,
+- msg1.txt containing the first (positive) message variant,
+- msg2.txt containing the second (negative) message variant.
+
+Steps of your solution (brief description that is just enough to reproduce your solution):
+
+My attack script splits the positive and negative messages in eighteen pieces
+each. Starting with the positive message pieces, I use itertools to calculate 
+the 2^18 possible combinations for variations, and compute their hash.
+They are stored in a map, with their hash as the key.
+Then I do the same thing for the negative messages, except each time I 
+calculate a variation, I compute its hash and check whether that same hash
+exists in my positive map.     
+If it does, I set my negative solution to the present variant,
+and my positive solution to the variant the hash is mapped to in my positive map.
+Lastly, I hash both solutions and compare them just to check check.
+Thus, the problem is solved.     
+
+
+
+
+=======================================
+Challenge-2: XOR-MAC (2 points)
+---------------------------------------
+Attach in a zip file a file (fake-t.txt) containing your fake transaction! 
+Please, also include in the same zip file the original t-mac.bin file, 
+for the purpose of easier verification. Thanks!
+
+Steps of your solution (brief description that is just enough to reproduce your solution):
+
+First,
+I wrote a test script, xor_mac.py that took a transaction,
+sliced it into 16 byte (128 bit) blocks and xor'ed these blocks together
+to get the MAC.
+Then it would calculate and self-check the MAC of the modified transaction I provided
+against the MAC of the original transaction, and print out whether the
+XOR balance had been disrupted or maintained.
+
+Then,
+I looked for a reasonable slice of the time I could modify and decided on:
+23|11:23
+...
+90002500
+I then converted both "23|11:23" and "90002500" to binary. 
+Taking the binary form of '3' (00110011) the last character of the first block, 
+I incremented it to '7' (00110111)
+Aligning that with the binary form of '0' (00110000) the last character of the third block,
+I changed the corresponding third-to-last bit from 0 to 1, so that the xor result 
+would stay the same. This changed '0' to '4'.
+And so my new transaction became:
+"2020:02:23|11:27:38|21459|A74635|B29846|90002504"
+                ^                               ^
+
+Finally,
+Running it on the test script confirmed the MAC was equivalent with the original.
+
+
+
+
+==========================================
+Challenge-3: Fill the Gap (2 points)
+------------------------------------------
+The encryption key that was used to produce ciphertext.crypt:
+b2e1237a408e072e2e1306c7ed22b2e7
+
+
+The result of decoding ciphertext.crypt with the obtained key:
+Psychologist Michal Kosinski developed a method to analyze people 
+in minute detail based on their Facebook activity. 
+Did a similar tool help propel Donald Trump to victory? 
+Two reporters from Zurich-based Das Magazin went data-gathering.
+
+​On November 9 at around 8.30 AM., Michal Kosinski woke up 
+in the Hotel Sunnehus in Zurich. The 34-year-old researcher had come 
+to give a lecture at the Swiss Federal Institute of Technology (ETH) 
+about the dangers of Big Data and the digital revolution. 
+Kosinski gives regular lectures on this topic all over the world. 
+He is a leading expert in psychometrics, a data-driven sub-branch of psychology. 
+When he turned on the TV that morning, he saw that the bombshell had exploded: 
+contrary to forecasts by all leading statisticians, 
+Donald J. Trump had been elected president of the United States. 
+
+
+Steps of your solution (explain how you managed to figure out the key):
+Given:
+    X_i     =  b5562ff25e66e602eae4dbd61b2d5e8b
+    X_(i+2) =  9d6f86e273de3f3905bc068defea0571
+
+Extract the IV from the encrypted file ciphertext.crypt 
+by copying the first 16 bytes from the file using a hex editor
+    IV = '9ad88a6a6d36de15c14bdb9c19e5e91d'
+
+Now, I understand:
+    K = MD5( X_(i) + T_(i) ) ............. eqn 1
+    X_(i+1) = X_(i) + K .................. eqn 2
+    IV = MD5( X_(i+1) + T_(i+1) ) ........ eqn 3
+    X_(i+2) = X_(i+1) + IV ............... eqn 4
+
+First I find X_(i+1) by xor-ing the IV and X_(i+2) according to eqn 4
+X_(i+1) = xor('9ad88a6a6d36de15c14bdb9c19e5e91d',
+              '9d6f86e273de3f3905bc068defea0571')
+        = '07b70c881ee8e12cc4f7dd11f60fec6c'
+
+Then according to eqn 2, I xor X_(i+1) and X_(i) to find K
+K = xor('07b70c881ee8e12cc4f7dd11f60fec6c',
+        'b5562ff25e66e602eae4dbd61b2d5e8b')
+    = 'b2e1237a408e072e2e1306c7ed22b2e7'
+
+Lastly, I decrypted the file using the aes_cbc_dec.py script 
+with the obtained key K and IV.
+
+
+
