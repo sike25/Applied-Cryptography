@@ -1,0 +1,80 @@
+XOR
+---
+
+>>> 0xabcd ^ 0x1234
+47609
+
+>>> hex(0xabcd ^ 0x1234)
+'0xb9f9'
+
+>>> format(0xabcd ^ 0x1234, 'x')
+'b9f9'
+
+
+
+Byte strings
+------------
+
+>>> s = b'\x01\x02\x03\x04'
+>>> s
+b'\x01\x02\x03\x04'
+>>> type(s)
+<class 'bytes'>
+
+>>> s[0]
+1
+>>> hex(s[0])
+'0x1'
+>>> hex(s[-1])
+'0x4'
+
+>>> s[2:3]
+b'\x03'
+
+>>> t = b'\x02'*4
+>>> t
+b'\x02\x02\x02\x02'
+
+>>> s+t
+b'\x01\x02\x03\x04\x02\x02\x02\x02'
+
+
+>>> t = bytes.fromhex('01020304')
+>>> t
+b'\x01\x02\x03\x04'
+
+
+Unfortunatey, we cannot XOR two byte strings like this:
+
+>>> a = b'cafe'
+>>> b = b'babe'
+>>> a ^ b
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: unsupported operand type(s) for ^: 'bytes' and 'bytes'
+
+
+Useful conversions
+------------------
+
+b is a byte string
+s is a string
+i is an integer
+
+
+- byte string to hex string: b.hex()
+- hex string to byte string: bytes.fromhex(h)
+
+- string to byte string: s.encode('ascii') or s.encode('utf-8')
+- byte string to string: b.decode('ascii') or b.decode('utf-8')
+
+- byte string to integer: int.from_bytes(b, byteorder='big')
+- integer to byte string: i.to_bytes(length=2, byteorder='big')
+
+
+Byte order can be big-endian ('big') or little-endian ('little').
+In case of big-endian ordering, the first byte of the byte string is interpreted as the most significant byte of the integer represented by the byte string, while in case of little-endian ordering the first byte is interpreted as the least significant byte.
+
+Big-endianness is the dominant ordering in networking protocols (IP, TCP, UDP). Conversely, little-endianness is the dominant ordering for processor architectures (x86, most ARM implementations) and their associated memory.
+
+More details: https://en.wikipedia.org/wiki/Endianness
