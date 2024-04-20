@@ -17,7 +17,11 @@ three-round Feistel block cipher, figure out the key.
 Implement attacks on block ciphers in CBC and CTR mode using the content leak problem (from repeating cipher text blocks),
 the padding oracle attack and a repeated initialization counter.
 
-### Task Four: Hashes and MAC
+### Task Five: Hashes and MAC
 Modifying two messages to get them to collide with the same hash value. Carefully modify a real transaction record
 so the MAC still validates. Given a PRNG and some versions of its state, find the key it was used to produce
 and decrypt some text in aec_cbc. 
+
+### Task Six: 
+
+
