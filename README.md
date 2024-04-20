@@ -22,6 +22,11 @@ Modifying two messages to get them to collide with the same hash value. Carefull
 so the MAC still validates. Given a PRNG and some versions of its state, find the key it was used to produce
 and decrypt some text in aec_cbc. 
 
-### Task Six: 
-
+### Task Six: Feisel and PRNGs
+Given corresponding plain and cipher text and the structure of a six-round SHA-based Feisel structure,
+find the encryption key and decrypt a second piece of ciphertext.
+Given a timestamp-based pseudorandom number generator used to produce a MAC key and an encryption key in turn,
+and the timestamp when they were used, figure out these keys and decode the payload they protect.
+Decrypt the ciphertext obtained from xoring a sequence_number+command sequence and keystream (from
+a given pseudorandom number generator), to get a control sequence that displays a message on the screen.
 
